@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_2440599_4uzwcysppa.css">
+  <style>
+    body>div {
+      border: 10px solid #333;
+    }
+    ul,li {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    p {
+      width: 200px;
+      height: 50px;
+      border: 1px solid #333;
+      text-overflow: ellipsis;
+      display: none;
+    }
+    .box {
+      width: 300px;
+      height: 150px;
+      border: 1px solid #333;
+    }
+    .box ul {
+      display: flex;
+      justify-content: space-around;
+    }
+    .box ul li {
+      width: 20%;
+      height: 40px;
+      background-color: skyblue;
+      border: 1px solid #fff;
+      font-size: 20px;
+      text-align: center;
+      line-height: 40px;
+      cursor: pointer;
+    }
+    .box1 {
+      width: 300px;
+      height: 150px;
+      border: 1px solid #333;
+      position: fixed;
+      left: calc(50% - 150px);
+      top: calc(50% - 75px);
+      display: none;
+      background-color: #fff;
+    }
+    .box1 span {
+      background-color: red;
+      font-size: 30px;
+      position: absolute;
+      right: 0;
+      cursor: pointer;
+    }
+    .iconfont {
+      margin-left: -30px;
+    }
+  </style>
+</head>
+<body>
+<!--免密码登录提示框-->
+<div>
+  <h3>免密码登录提示框</h3>
+  <input type="radio" class="radio">十天内免密码登录
+  <p class="text">为了您的信息安全,请不要在网吧公共电脑登录账号</p>
+</div>
+<!--登录按钮点击事件-->
+<div>
+  <h3>登录按钮点击事件</h3>
+  <div class="box">
+    <ul>
+      <li>首页</li>
+      <li>新闻</li>
+      <li>视频</li>
+      <li>贴吧</li>
+      <li class="sign">登录</li>
+    </ul>
+    <h4>只有登录按钮有点击事件</h4>
+  </div>
+  <div class="box1">
+    <span>X</span>
+    我是弹出框
+  </div>
+</div>
+<!--搜索框提示信息-->
+<div>
+  <h3>搜索框提示信息</h3>
+  <input type="text" value="请输入内容" class="search"><br />
+</div>
+<!--密码框-->
+<div>
+  <h3>密码框作业</h3>
+  <input type="password" class="pas" placeholder="请输入密码">
+  <span class="iconfont icon-yanjing_yincang"></span>
+</div>
+<script>
+  // 免密码登录提示框
+  const radio = document.querySelector('.radio');
+  const text = document.querySelector('.text');
+  radio.onmouseover = function() {
+    text.style.display = 'block';
+  }
+  radio.onmouseleave = function() {
+    text.style.display = 'none';
+  }
+  // 登录按钮点击事件
+  const sign = document.querySelector('.sign');
+  const box1 = document.querySelector('.box1');
+  const off = document.querySelector('.box1 span');
+  sign.onclick = function() {
+    document.body.style.backgroundColor = '#ccc';
+    box1.style.display = 'block';
+  }
+  off.onclick = function() {
+    document.body.style.backgroundColor = '';
+    box1.style.display = 'none';
+  }
+  // 搜索框信息内容
+  const search = document.querySelector('.search');
+  search.onfocus = function() {
+    if(this.value === '请输入内容') {
+      this.value = '';
+    }
+  }
+  search.onblur = function() {
+    if(this.value.trim() === '') {
+      this.value = '请输入内容'
+    }
+  }
+  // 密码框显示隐藏
+  const pas = document.querySelector('.pas');
+  const span = document.querySelector('.iconfont');
+  let num = 0;
+  span.onclick = function() {
+    pas.value = pas.value.trim();
+    num++;
+    if(num % 2 != 0) {
+      this.classList.remove('icon-yanjing_yincang');
+      this.classList.add('icon-yanjing_xianshi');
+      pas.type = 'text';
+    }else {
+      this.classList.remove('icon-yanjing_xianshi');
+      this.classList.add('icon-yanjing_yincang');
+      pas.type = 'password';
+    }
+  }
+</script>
+</body>
+</html>

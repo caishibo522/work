@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #ccc;
+    }
+    .w {
+      width: 1200px;
+      margin: 0 auto;
+    }
+    ul,li {
+      list-style-type: none;
+    }
+    a {
+      text-decoration: none;
+      color: #000;
+    }
+    /*头部样式开始*/
+    .header {
+      height: 50px;
+      background-color: #ccc;
+    }
+    .header ul {
+      width: 500px;
+      float: left;
+    }
+    .header ul li{
+      line-height: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      float: left;
+      margin-right: 40px;
+    }
+    .header ul li:nth-of-type(4) {
+      color: blue;
+    }
+    .header .logo {
+      width: 300px;
+      height: 100%;
+      float: right;
+    }
+    /*登录页面的样式*/
+    .sign {
+      width: 300px;
+      height: 270px;
+      border: 1px solid #333;
+      position: fixed;
+      left: calc(50% - 150px);
+      top: calc(50% - 200px);
+      background-color: #fff;
+      display: none;
+      z-index: 3;
+    }
+    .sign h3 {
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+      cursor: pointer;
+    }
+    .sign div {
+      margin-top: 10px;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+    }
+    .sign input {
+      width: 80%;
+      height: 30px;
+      border-radius: 5px;
+      outline: none;
+    }
+    .sign #radio {
+      width: 15px;
+      height: 15px;
+      position: absolute;
+    }
+    .sign p {
+      width: 200px;
+      height: 20px;
+      background-color: #eee;
+      position: fixed;
+      display: none;
+    }
+    .sign a {
+      display: block;
+      width: 60%;
+      height: 50px;
+      background-color: #ccc;
+      text-align: center;
+      margin: 15px auto;
+      line-height: 50px;
+      font-size: 20px;
+    }
+    .sign a:hover {
+      color: blue;
+    }
+    .sign img {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      right: 20px;
+      top: calc(50%);
+    }
+    .sign .off {
+      width: 50px;
+      height: 30px;
+      font-size: 20px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: #ccc;
+      text-align: center;
+      line-height: 30px;
+      cursor: pointer;
+    }
+    /*主体样式*/
+    .main {
+      height: 550px;
+    }
+    .box {
+      height: 100%;
+      position: relative;
+    }
+    .box ul {
+      height: 100px;
+    }
+    .box ul li {
+      width: 240px;
+      height: 100%;
+      box-sizing: border-box;
+      float: left;
+    }
+    .box ul li.active {
+      border: 3px solid blue;
+    }
+    .box ol {
+      width: 450px;
+    }
+    .box ol li {
+      width: 100%;
+      height: 450px;
+      position: absolute;
+      top: 100px;
+      left: 0;
+      background-color: pink;
+      display: none;
+    }
+    .box ol li.active {
+      display: block;
+    }
+    /*底部样式开始*/
+    .footer {
+      height: 122px;
+      line-height: 122px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+<!--头部模块-->
+<div class="header">
+  <div class="w">
+    <ul>
+      <li>我的信息</li>
+      <li>成长历程</li>
+      <li>个人博客</li>
+      <li title="点我有事件" class="li">登录</li>
+      <li>注册</li>
+    </ul>
+    <a href="#"><h1 class="logo" title="我的logo">logo暂无</h1></a>
+  </div>
+</div>
+<!--登录按钮点击以后显示的内容-->
+<div class="sign">
+  <div class="off">X</div>
+  <h3>账号登录</h3>
+  <div>
+    <label for="account">账号:</label>
+    <input type="text" value="请输入账号" id="account">
+  </div>
+  <div>
+    <label for="pas">密码:</label>
+    <input type="password" placeholder="请输入密码" id="pas">
+    <img src="./img/biegg.png" class="img">
+  </div>
+    <label for="radio">记住密码</label>
+    <input type="radio" id="radio">
+    <p class="text">请不要在陌生设备点击</p>
+  <a href="#">登录</a>
+</div>
+<!--主体内容-->
+<div class="main">
+<div class="box w">
+  <ul>
+  </ul>
+  <ol>
+  </ol>
+</div>
+</div>
+<!--底部内容-->
+<div class="footer w">
+  <h1>除了图片切换的效果,别的效果都在点击登录按钮以后的登录框里面</h1>
+</div>
+<!--js代码开始-->
+<script>
+  // 获取登录按钮
+  const li = document.querySelector('.li');
+  // 获取登录框的页面
+  const sign = document.querySelector('.sign');
+  // 获取账号表单元素
+  const account = document.querySelector('#account');
+  // 获取密码表单元素
+  const pas = document.querySelector('#pas');
+  // 获取密码框后面的眼睛图片
+  const img = document.querySelector('.img');
+  // 获取选项框
+  const radio = document.querySelector('#radio');
+  // 获取提示信息
+  const p = document.querySelector('.text');
+  // 获取登录框的关闭按钮
+  const off = document.querySelector('.off');
+  // 获取选项卡的上面的小按钮
+  const ul = document.querySelector('.box ul');
+  // 获取选项卡下面的展示的大图片
+  const ol = document.querySelector('.box ol');
+  let num = 0;// 用于控制密码框后面的小眼睛
+  // 登录按钮点击事件
+  li.onclick = function() {
+    sign.style.display = 'block';
+  }
+  // 账号框获取焦点事件
+  account.onfocus = function() {
+    if(this.value === '请输入账号') {
+      this.value = ''
+    }
+  }
+  // 账号框失去焦点事件
+  account.onblur = function() {
+    if(this.value.trim() === '') {
+      this.value = '请输入账号'
+    }
+  }
+  // 密码框后面的点击事件
+  img.onclick = function() {
+    num++;
+    if(num % 2 != 0) {
+      this.src = './img/kaiegg.png';
+      pas.type = 'text';
+    }else {
+      this.src = './img/biegg.png';
+      pas.type = 'password';
+    }
+  }
+  // 选项按钮的移入事件
+  radio.onmouseover = function() {
+    p.style.display = 'block'
+  }
+  // 选项按钮的移出事件
+  radio.onmouseleave = function() {
+    p.style.display = 'none';
+  }
+  // 关闭按钮的点击事件
+  off.onclick = function() {
+    sign.style.display = 'none';
+  }
+  // 选项卡创建标签并且插入到页面
+  createImg(ul);
+  createImg(ol);
+  function createImg(target) {
+    for(let i = 0; i < 5; i++) {
+      let li = document.createElement('li');
+      let img = document.createElement('img');
+      if(i === 0) {
+        li.className = 'active';
+      }
+      img.src = `./img/work${i + 1}.webp`;
+      img.style.width = '100%';
+      img.style.height = '100%';
+      li.appendChild(img);
+      target.appendChild(li);
+    }
+  }
+  // 选项卡注册事件
+  addEvent()
+  function addEvent() {
+    for(let i = 0; i < ul.children.length; i++) {
+      ul.children[i].onclick = function() {
+        for(let j = 0; j < ul.children.length; j++) {
+          ul.children[j].className = '';
+          ol.children[j].className = '';
+        }
+        this.className = 'active';
+        ol.children[i].className = 'active';
+      }
+    }
+  }
+</script>
+</body>
+</html>
