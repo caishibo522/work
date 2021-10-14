@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    ul,li{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    ul {
+      width: 700px;
+      height: 700px;
+      border: 10px solid #333;
+    }
+    li {
+      width: 50px;
+      height: 50px;
+      border: 1px solid red;
+      box-sizing: border-box;
+      float: left;
+      text-align: center;
+      line-height: 50px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+<script>
+  // 乘法口诀
+  for(let i = 1; i <= 9; i++) {
+    for(let j = 1; j <= i; j++) {
+      document.write(`${j} * ${i} = ${j * i} `);
+    }
+    document.write('<br>')
+  }
+  document.write('================================================================<br>')
+  // 打印数字
+  let count = 0;
+  for(let i = 0; i < 100; i++) {
+    count++;
+    if(i < 10) {
+      document.write(`0${i} `);
+    }else {
+      document.write(i + ' ')
+    }
+
+    if(count === 10) {
+      document.write('<br>')
+      count = 0;
+    }
+  }
+  document.write('================================================================<br>');
+  // 打印表格
+  const arr = [];
+  for(let i = 0; i < 14; i++) {
+  if(i === 0) {
+    arr.push('x');
+  }else {
+    arr.push(i - 1);
+  }
+  for(let j = 0; j < 13; j++) {
+    if(i === 0) {
+      arr.push(j);
+    }else {
+      arr.push(j * (i - 1));
+    }
+  }
+}
+let ul = document.createElement('ul');
+for(let i = 0; i < arr.length; i++) {
+  let li = document.createElement('li');
+  li.innerText = arr[i];
+  ul.appendChild(li);
+}
+document.body.appendChild(ul);
+</script>
+</body>
+</html>
