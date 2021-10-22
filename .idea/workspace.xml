@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5453350b-2703-4cdb-bbb3-6ae7a39404e6" name="默认更改列表" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jswork2.html" beforeDir="false" afterPath="$PROJECT_DIR$/jswork2.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +85,13 @@
       <workItem from="1633746994212" duration="8000" />
       <workItem from="1634171157361" duration="5608000" />
       <workItem from="1634177963753" duration="5000" />
-      <workItem from="1634211160338" duration="3963000" />
+      <workItem from="1634211160338" duration="5512000" />
+      <workItem from="1634220119736" duration="494000" />
+      <workItem from="1634263628227" duration="315000" />
+      <workItem from="1634274349794" duration="92000" />
+      <workItem from="1634274580175" duration="550000" />
+      <workItem from="1634275232750" duration="1218000" />
+      <workItem from="1634862716850" duration="3510000" />
     </task>
     <servers />
   </component>
