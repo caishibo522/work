@@ -30,16 +30,16 @@
 <h3 class="respVal"></h3>
 <button class="strBtn">验证字符串</button>
 <h1>四则运算</h1>
-<input type="text" class="num1">
+<input type="number" class="num1">
 <select>
   <option>+</option>
   <option>-</option>
   <option>*</option>
   <option>/</option>
 </select>
-<input type="text" class="num2">
+<input type="number" class="num2">
 <button class="resultBtn">=</button>
-<input type="text" class="result">
+<input type="number" class="result">
 <button class="clearBtn">清空</button>
 <h1>获取随机数字</h1>
 <p class="ranVal"></p>
@@ -149,15 +149,20 @@ btnIp.addEventListener('click',function() {
   const resultBtn = document.querySelector('.resultBtn');
   const result = document.querySelector('.result');
   const clearBtn = document.querySelector('.clearBtn');
+  result.setAttribute('disabled',true);
   resultBtn.onclick = function() {
-      let aVal = parseFloat(num1.value);
-      let bVal = parseFloat(num2.value);
-      if(!aVal || !bVal) {
-        return window.alert('请输入值')
-      }
+    let str = num1.value;
+    let len = str.length;
+    let str2 = num2.value;
+    let len2 = str2.length;
+    if(len === 0 || len2 === 0) {
+      return window.alert('请输入两个正确的数字')
+    }
+      let aVal = +num1.value;
+      let bVal = +num2.value;
       switch (select.value) {
       case '+':
-        result.value = aVal + bVal;
+      result.value = aVal + bVal;
         break;
         case '-':
           result.value = aVal - bVal;
@@ -180,10 +185,7 @@ btnIp.addEventListener('click',function() {
     return Math.floor(Math.random() * (max - min) + min)
   }
   ranNum.addEventListener('click',function() {
-    ranVal.innerHTML = `0-1之间的随机数${Math.random()},
-    1-100之间的随机整数${getRandom(10,100)},
-    100-500之间的随机整数${getRandom(100,500)},
-    500-1000之间的随机整数${getRandom(500,1000)}`
+    ranVal.innerHTML = `随机数${getRandom(0,9)}${getRandom(0,9)}${getRandom(0,9)}${getRandom(0,9)}`;
   })
 </script>
 </body>
