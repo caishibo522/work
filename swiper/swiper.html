@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    .demo {
+      width: 400px;
+      height: 300px;
+      border: 1px solid #333;
+      margin: 20px auto;
+    }
+    .item {
+      width: 400px;
+      height: 300px;
+    }
+    .item1 {
+      background-color: pink;
+    }
+    .item2 {
+      background-color: red;
+    }
+    .item3 {
+      background-color: green;
+    }
+    .swiper-container>* {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    /*轮播图外层样式*/
+    .swiper-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+    /*不同类型的下面的样式*/
+    .swiper-container_animate .swiper-item {
+      float: left;
+    }
+    .swiper-container_fade .swiper-item {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: none;
+    }
+    .swiper-container_animate .swiper-items {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  /*  左右按钮样式*/
+    .swiper-btn {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      position: absolute;
+      top: 50%;
+      margin-top: -20px;
+      background-color: rgba(0,0,0,.5);
+      font-size: 20px;
+      color: #fff;
+      cursor: pointer;
+      user-select: none;
+    }
+    .swiper-leftBtn {
+      left: 0;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
+    .swiper-rightBtn {
+      right: 0;
+      border-top-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+    }
+  /*  小圆点的样式*/
+    .swiper-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      padding: 0 10px;
+    }
+    .swiper-dots span {
+      display: inline-block;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      background-color: #fff;
+      margin: 0 2px;
+      cursor: pointer;
+      border: 1px solid rgba(0, 0, 0, .5);
+    }
+  </style>
+</head>
+<body>
+<div class="demo">
+  <div class="item1 item"></div>
+  <div class="item2 item"></div>
+  <div class="item3 item"></div>
+</div>
+<script src="./jquery.mini.js"></script>
+<script>
+  // 给jquery本身扩展一个方法
+  $.fn.extend({
+    swiper: function(options) {
+      let obj = new Swiper(options,this);
+      obj.init();
+    }
+  })
+  //Swiper的构造函数
+  function Swiper(options,wrap) {
+    // 轮播图的容器
+    this.wrap = wrap;
+    //轮播的内容
+    this.contentList = options.contentList || [];
+    //是否自动轮播
+    this.isAuto = options.isAuto === undefined ? true : !options.isAuto;
+    //自动轮播的间隔
+    this.autoChange = options.autoChange || 1500;
+    //按钮的显示样式
+    this.btnType = options.btnType || 'show';
+    //轮播图的类型
+    this.type = options.type || 'animate';
+    //小圆点是否显示
+    this.showDot = options.showDot === undefined ? true : !!options.showDot;
+    //小圆点的位置
+    this.dotPosition = options.dotPosition || 'center';
+    //小圆点的颜色
+    this.dotColor = options.dotColor || 'orange';
+    //小圆点的大小
+    this.dotSize = options.dotSize || 10;
+    //选中的小圆点的颜色
+    this.curDot = options.curDot || 'black';
+    //轮播图的宽度
+    this.width = options.width || $(wrap).width();
+    //轮播图的高度
+    this.height = options.height || $(wrap).height();
+  // 有多个个图片
+    this.len = this.contentList.length;
+    //轮播图的索引
+    this.index = 0;
+  //  定时器
+    this.timer = null;
+  //  判断是否运动完成
+    this.lock = false;
+  }
+  //初始化轮播图的函数
+  Swiper.prototype.init = function() {
+  //  创建元素
+    this.createElement();
+  //  初始化样式
+    this.initStyle();
+  //  绑定事件
+    this.bindEvent()
+  }
+  //创建元素
+  Swiper.prototype.createElement = function() {
+    //总容器
+    let swiperContainer = $('<div class="swiper-container"></div>');
+  //  轮播图的父元素
+    let swiperItems = $('<ul class="swiper-items"></ul>');
+  //  小圆点的父元素
+    let swiperDots = $('<div class="swiper-dots"></div>');
+  //  左右按钮
+    let leftBtn = $('<div class="swiper-btn swiper-leftBtn">&lt;</div>');
+    let rightBtn = $('<div class="swiper-btn swiper-rightBtn">&gt;</div>');
+    //创建轮播的内容
+    for(let i = 0; i < this.len; i++) {
+      $('<li class="swiper-item"></li>').html(this.contentList[i]).appendTo(swiperItems);
+      $('<span class="swiper-dot"></span>').appendTo(swiperDots);
+    }
+    //根据参数改变轮播的样式
+    if(this.type === 'animate') {
+      // console.log($(this.contentList))
+      // console.log(this.contentList)
+      swiperItems.append($('<li class="swiper-item"></li>').html($(this.contentList[0]).clone(true)))
+    }
+    //根据参数改变按钮的样式
+    switch (this.btnType) {
+      //按钮隐藏
+      case 'hide': {
+        leftBtn.hide();
+        rightBtn.hide();
+        break;
+      }
+      //移入显示，移出隐藏
+      case "hover": {
+        leftBtn.hide();
+        rightBtn.hide();
+        swiperContainer.hover(function() {
+          leftBtn.show();
+          rightBtn.show();
+        },function() {
+          leftBtn.hide();
+          rightBtn.hide();
+        })
+        break;
+      }
+      //默认为一直显示
+      default : {
+        break;
+      }
+    }
+    //小圆点是否显示
+    if(!this.showDot) {
+      swiperDots.hide();
+    }
+    swiperContainer.append(swiperItems)
+        .append(swiperDots)
+        .append(leftBtn)
+        .append(rightBtn)
+        .appendTo(this.wrap)
+        .addClass('swiper-container_' + this.type);
+  }
+//  初始化样式
+  Swiper.prototype.initStyle = function() {
+  //  轮播图盒子的宽高
+    $(this.wrap)
+        .find($('.swiper-items'))
+        .css({
+      width: this.type === 'animate'? this.width * (this.len + 1) : this.width,
+      height: this.height
+    }).find($('.swiper-item'))
+    .css({
+      width: this.width,
+      height: this.height
+    })
+  //  根据类型设置第一张的显示
+    if(this.type === 'fade') {
+      $(this.wrap).find($('.swiper-item')).eq(this.index).show();
+    }else {
+      $(this.wrap).find($('.swiper-items')).css({
+        left: -this.index * this.width,
+      });
+    }
+  //  设置小圆点
+    $(this.wrap).find($('.swiper-dots')).css({
+      textAlign: this.dotPosition,
+      display: this.showDot?'block':'none'
+    }).find($('span')).css({
+      //所有小圆点的样式
+      width: this.dotSize,
+      height: this.dotSize,
+      backgroundColor: this.dotColor
+    }).eq(this.index % this.len).css({
+      //当前的小圆点的样式
+      backgroundColor: this.curDot
+    })
+  }
+//  绑定事件
+  Swiper.prototype.bindEvent = function() {
+    //事件里面的this指向事件源，所以提前保存this
+    let This = this;
+    //左按钮点击事件
+    $(this.wrap).find($('.swiper-leftBtn')).click(function() {
+      if(This.lock) {
+        //进入这个判断以后,说明两张图片正在进行交换
+        return
+      }
+      This.lock = true;
+     if(This.type === 'fade') {
+     //   淡入淡出轮播图
+       if(This.index === 0) {
+         This.index = This.len - 1;
+       }else {
+         This.index--;
+       }
+       This.change();
+     }else {
+     //  左右交换轮播图
+       if(This.index === 0) {
+
+         $('.swiper-items').css({
+           left: -This.index * This.width
+         })
+         This.index = This.len - 1;
+       }else {
+         This.index--;
+       }
+       This.change()
+     }
+    })
+  //  右按钮点击事件
+    $(this.wrap).find($('.swiper-rightBtn')).click(function() {
+      if(This.lock) {
+        return
+      }
+      This.lock = true;
+      if(This.type === 'fade') {
+        if(This.index === This.len - 1) {
+          This.index = 0;
+        }else {
+          This.index++;
+        }
+        This.change()
+      }else {
+        if(This.index === This.len - 1) {
+          $('.swiper-items').css({
+            left:0
+          })
+          This.index = 0;
+        }else {
+          This.index++;
+        }
+        This.change();
+      }
+    })
+  }
+//
+  Swiper.prototype.change = function() {
+    let This = this;
+    if(this.type === 'fade') {
+    //  淡入淡出
+      $('.swiper-item').fadeOut().eq(this.index).fadeIn(function() {
+        This.lock = false;
+      })
+    }else {
+    //  从左到右
+      $('.swiper-items').animate({
+        left: -this.index * this.width
+      },function() {
+        This.lock = false;
+      })
+    }
+  //  更新小圆点
+    $(this.wrap).find($('.swiper-dots>span')).css({
+      backgroundColor: this.dotColor
+    }).eq(this.index).css({
+      backgroundColor:this.curDot
+    })
+  }
+//  配置
+$('.demo').swiper({
+  contentList: $('.item'), // 轮播图的轮播内容
+  isAuto: true, // 是否自动轮播，true或者false
+  autoChange: 3000, // 自动轮播的时间间隔
+  btnType: 'show', // 左右按钮的显示样式,show为显示，hover为移入显示移出隐藏,fide为隐藏
+  type:'animate',// 轮播图的类型 fade为淡入淡出,animate为左右切换
+  showDot:true,//小圆点是否显示
+  dotPosition:'left', // 小圆点显示的位置left center right
+  dotColor:'#fff', // 小圆点的颜色
+  dotSize:10,// 小圆点的大小
+  curDot: 'orange', // 当前图片的小圆点的颜色
+  width: 400,// 轮播图内容的宽度
+  height: 300 // 轮播图内容的高度
+})
+</script>
+</body>
+</html>
